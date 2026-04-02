@@ -21,6 +21,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+/.phpunit.cache
 
 /public/build
 /storage/pail
@@ -28,3 +29,19 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+*.log
+
+bootstrap/cache
+storage
+
+.DS_Store
+
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+
+_ide_helper.php
+Thumbs.db
