@@ -1,2 +1,23 @@
 models:
-  # ...
+  Host:
+    name: string
+    url: string
+    type: enum:webdav,rest_api
+    status: enum:active,inactive
+
+    # Auth
+    auth_type: enum:basic,bearer,hmac
+    auth_credentials: json
+
+    # Network settings
+    ip_address: ip-address
+    timeout: integer default:30
+
+    # Log and monitor
+    last_success_at: timestamp nullable
+    last_error_at: timestamp nullable
+    last_error_message: text nullable
+
+    settings: json-nullable
+
+    timestamps: true
