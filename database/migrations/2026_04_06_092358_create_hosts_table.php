@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
-            $table->enum('type', ["webdav","rest_api"]);
+            $table->enum('type', ["webdav","local","s3"]);
             $table->enum('status', ["active","inactive"]);
             $table->enum('auth_type', ["basic","bearer","hmac"]);
             $table->json('auth_credentials');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamp('last_success_at')->nullable();
             $table->timestamp('last_error_at')->nullable();
             $table->text('last_error_message')->nullable();
-            $table->string('settings');
+            $table->json('settings')->nullable();
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ class HostFactory extends Factory
         return [
             'name' => fake()->name(),
             'url' => fake()->url(),
-            'type' => fake()->randomElement(["webdav","rest_api"]),
+            'type' => fake()->randomElement(["webdav","local","s3"]),
             'status' => fake()->randomElement(["active","inactive"]),
             'auth_type' => fake()->randomElement(["basic","bearer","hmac"]),
             'auth_credentials' => '{}',
@@ -23,7 +23,7 @@ class HostFactory extends Factory
             'last_success_at' => fake()->dateTime(),
             'last_error_at' => fake()->dateTime(),
             'last_error_message' => fake()->text(),
-            'settings' => fake()->word(),
+            'settings' => '{}',
         ];
     }
 }
