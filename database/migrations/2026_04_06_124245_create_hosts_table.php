@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('url');
             $table->enum('type', ["webdav","local","s3"]);
             $table->enum('status', ["active","inactive"]);
-            $table->enum('auth_type', ["basic","bearer","hmac"]);
-            $table->json('auth_credentials');
+            $table->enum('auth_type', ["basic","bearer","hmac"])->nullable();
+            $table->json('auth_credentials')->nullable();
             $table->string('ip_address');
             $table->integer('timeout')->default(30);
             $table->timestamp('last_success_at')->nullable();

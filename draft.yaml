@@ -6,11 +6,11 @@ models:
     status: enum:active,inactive
 
     # Auth
-    auth_type: enum:basic,bearer,hmac
-    auth_credentials: json
+    auth_type: enum:basic,bearer,hmac nullable
+    auth_credentials: json nullable
 
     # Network settings
-    ip_address: ip-address
+    ip_address: string
     timeout: integer default:30
 
     # Log and monitor
