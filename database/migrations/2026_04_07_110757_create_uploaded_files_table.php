@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('host_id');
             $table->string('source_path');
-            $table->string('original_name');
+            $table->string('name')->unique();
             $table->integer('size_bytes');
             $table->integer('zip_size_bytes');
             $table->integer('number_of_file');
-            $table->enum('dtaset_type', ["image","video","code","text","tabular"]);
+            $table->enum('dataset_type', ["image","video","code","text","tabular"]);
             $table->string('hash');
             $table->timestamps();
         });

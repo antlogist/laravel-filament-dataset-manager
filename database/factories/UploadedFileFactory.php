@@ -17,11 +17,11 @@ class UploadedFileFactory extends Factory
             'user_id' => User::factory(),
             'host_id' => Host::factory(),
             'source_path' => fake()->word(),
-            'original_name' => fake()->word(),
+            'name' => fake()->name(),
             'size_bytes' => fake()->numberBetween(-10000, 10000),
             'zip_size_bytes' => fake()->numberBetween(-10000, 10000),
             'number_of_file' => fake()->numberBetween(-10000, 10000),
-            'dtaset_type' => fake()->randomElement(["image","video","code","text","tabular"]),
+            'dataset_type' => fake()->randomElement(["image","video","code","text","tabular"]),
             'hash' => fake()->word(),
         ];
     }

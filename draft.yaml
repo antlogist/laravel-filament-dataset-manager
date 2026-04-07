@@ -31,11 +31,11 @@ models:
 
     # Basic Info
     source_path: string
-    original_name: string
+    name: string unique
     size_bytes: integer
     zip_size_bytes: integer
     number_of_file: integer
-    dtaset_type: enum:image,video,code,text,tabular
+    dataset_type: enum:image,video,code,text,tabular
 
     hash: string
 
