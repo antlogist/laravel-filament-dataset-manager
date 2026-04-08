@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\UploadedFiles\Pages;
 
 use App\Filament\Resources\UploadedFiles\UploadedFileResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListUploadedFiles extends ListRecords
@@ -11,6 +12,11 @@ class ListUploadedFiles extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            Action::make('upload_file')
+                ->label('Upload File')
+                ->button()
+                ->url(fn() => UploadFile::getUrl())
+        ];
     }
 }
