@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    {{-- Page content --}}
+    <livewire:upload-form />
 </x-filament-panels::page>
