@@ -55,4 +55,27 @@ class FileService
 
         return true;
     }
+
+    public static function unzipFile(string $realPath, string $targetPath): void
+    {
+        try {
+            $zip = new ZipArchive();
+            if ($zip->open($realPath) !== true) {
+                throw new Exception("Error opening the archive.");
+            }
+
+            $isUnzipped = $zip->extractTo(storage_path($targetPath));
+            $zip->close();
+
+            if (!$isUnzipped) {
+                throw new Exception("Archive unpacking error.");
+            }
+        } catch (\Exception $e) {
+            $errorMessage = "The archive has not been unpacked.";
+            $logMessage = sprintf("[%s] %s", __METHOD__, $errorMessage . ' ' . $e->getMessage());
+
+            Log::error($logMessage);
+            throw new \Exception($errorMessage);
+        }
+    }
 }
