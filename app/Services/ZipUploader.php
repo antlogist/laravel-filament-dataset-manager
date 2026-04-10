@@ -47,5 +47,8 @@ class ZipUploader
 
         // Unzip files
         FileService::unzipFile($this->realPath, $extractionPath);
+
+        // Archive deletion
+        FileService::deleteFile($this->realPath);
     }
 }

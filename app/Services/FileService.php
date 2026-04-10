@@ -78,4 +78,23 @@ class FileService
             throw new \Exception($errorMessage);
         }
     }
+
+    public static function deleteFile(string $path): void
+    {
+        try {
+            if (file_exists($path)) {
+                // Deletion
+                if (!unlink($path)) {
+                    throw new \Exception('File deletion error: ' . $path);
+                }
+            } else {
+                throw new \Exception('The file was not found when it was deleted: ' . $path);
+            }
+        } catch (\Exception $e) {
+            $logMessage = sprintf("[%s] %s", __METHOD__, $e->getMessage());
+
+            Log::error($logMessage);
+            throw new \Exception($e->getMessage());
+        }
+    }
 }
