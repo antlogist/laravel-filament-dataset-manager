@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\UploadedFiles;
 
-use App\Filament\Resources\UploadedFiles\Pages\CreateUploadedFile;
 use App\Filament\Resources\UploadedFiles\Pages\EditUploadedFile;
 use App\Filament\Resources\UploadedFiles\Pages\ListUploadedFiles;
+use App\Filament\Resources\UploadedFiles\Pages\UploadFile;
 use App\Filament\Resources\UploadedFiles\Pages\ViewUploadedFile;
 use App\Filament\Resources\UploadedFiles\Schemas\UploadedFileForm;
 use App\Filament\Resources\UploadedFiles\Schemas\UploadedFileInfolist;
@@ -54,6 +54,7 @@ class UploadedFileResource extends Resource
     {
         return [
             'index' => ListUploadedFiles::route('/'),
+            'upload' => UploadFile::route('/upload'),
             'view' => ViewUploadedFile::route('/{record}'),
             'edit' => EditUploadedFile::route('/{record}/edit'),
         ];
