@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use ZipArchive;
 
 class FileService
@@ -96,5 +98,41 @@ class FileService
             Log::error($logMessage);
             throw new \Exception($e->getMessage());
         }
+    }
+
+    public static function getFolderSize(string $path): int
+    {
+        $fullPath = storage_path($path);
+        dd($fullPath);
+
+        if (!is_dir($fullPath)) {
+            $errorMessage = 'The folder was not found when calculating its size';
+
+            info($errorMessage . ' :' . $fullPath);
+
+            throw new \Exception($errorMessage);
+        }
+
+        return self::calculateFolderSize(storage_path($path));
+    }
+
+    public static function calculateFolderSize(?string $path): int
+    {
+        if (!$path) {
+            return 0;
+        }
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($path),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        $size = 0;
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                $size += $file->getSize();
+            }
+        }
+
+        return $size;
     }
 }

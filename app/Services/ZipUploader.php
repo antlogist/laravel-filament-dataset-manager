@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Host;
 use App\Models\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -59,6 +58,8 @@ class ZipUploader
         // Unzip files
         FileService::unzipFile($this->realPath, $this->extractionPath);
 
+        $this->folderSize = FileService::getFolderSize($this->extractionPath);
+
         // Archive deletion
         FileService::deleteFile($this->realPath);
     }
@@ -70,7 +71,7 @@ class ZipUploader
             'host_id' => $this->hostId,
             'source_path' => $this->extractionPath,
             'name' => $this->name,
-            'size_bytes' => 100,
+            'size_bytes' => $this->folderSize,
             'zip_size_bytes' => $this->zipSize,
             'number_of_file' => $this->numberOfFiles,
             'dataset_type' => 'image',
