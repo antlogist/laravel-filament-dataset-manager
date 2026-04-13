@@ -14,14 +14,18 @@ class UploadedFileFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'host_id' => Host::factory(),
+            'user_id' => function () {
+                return User::pluck('id')->random();
+            },
+            'host_id' => function () {
+                return Host::pluck('id')->random();
+            },
             'source_path' => fake()->word(),
             'name' => fake()->name(),
             'size_bytes' => fake()->numberBetween(-10000, 10000),
             'zip_size_bytes' => fake()->numberBetween(-10000, 10000),
             'number_of_file' => fake()->numberBetween(-10000, 10000),
-            'dataset_type' => fake()->randomElement(["image","video","code","text","tabular"]),
+            'dataset_type' => fake()->randomElement(["image", "video", "code", "text", "tabular"]),
             'hash' => fake()->word(),
         ];
     }
