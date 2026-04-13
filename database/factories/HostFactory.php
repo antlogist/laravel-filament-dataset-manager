@@ -14,7 +14,7 @@ class HostFactory extends Factory
         return [
             'name' => fake()->name(),
             'url' => fake()->url(),
-            'type' => fake()->randomElement(["webdav","local","s3"]),
+            'type' => fake()->randomElement(["webdav","s3"]),
             'status' => fake()->randomElement(["active","inactive"]),
             'auth_type' => fake()->randomElement(["basic","bearer","hmac"]),
             'auth_credentials' => '{}',
