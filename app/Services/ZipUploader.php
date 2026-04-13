@@ -34,6 +34,8 @@ class ZipUploader
             $errorMessage = 'Error when uploading a file: ' . $e->getMessage();
             $logMessage = sprintf("[%s] %s", __METHOD__, $errorMessage);
 
+            FileService::deleteFile($this->realPath);
+
             Log::info($logMessage);
             throw new \Exception($errorMessage);
         }
