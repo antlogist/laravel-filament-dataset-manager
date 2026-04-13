@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Host;
+use App\Models\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -18,7 +20,7 @@ class ZipUploader
     public $numberOfFiles = 0;
     public $hash = '';
 
-    public function save(TemporaryUploadedFile $file)
+    public function save(TemporaryUploadedFile $file, int $hostId)
     {
         try {
             $this->userId = Auth::id();
