@@ -10,17 +10,19 @@ new class extends Component {
 
     public $file;
     public $host;
+    public $name;
 
     public function save()
     {
         $this->validate([
             'file' => 'required|file|mimes:zip|max:204800',
             'host' => 'required|exists:hosts,id',
+            'name' => 'required|unique:uploaded_files,name',
         ]);
 
         try {
             $uploader = new ZipUploader();
-            $uploader->save($this->file, $this->host);
+            $uploader->save($this->file, $this->host, $this->name);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
             $this->dispatch('notify', ['message' => $e->getMessage()]);
@@ -45,12 +47,31 @@ new class extends Component {
     <div style="margin-bottom: 1rem">
         <x-filament::input.wrapper>
             <x-filament::input.select wire:model="host">
-                @foreach (\App\Models\Host::all() as $host)
-                    <option value="{{ $host->id }}">{{ $host->name }}</option>
+                <option value="">Select host</option>
+                @foreach (\App\Models\Host::all()->where('status', 'active') as $host)
+                    <option value="{{ $host->id }}">{{ $host->type }} - {{ $host->name }}</option>
                 @endforeach
             </x-filament::input.select>
         </x-filament::input.wrapper>
     </div>
+
+    @error('host')
+        <div style="margin-bottom: 1rem">
+            <span style="color: red;">{{ $message }}</span>
+        </div>
+    @enderror
+
+    <div style="margin-bottom: 1rem">
+        <x-filament::input.wrapper>
+            <x-filament::input type="text" wire:model="name" placeholder="Enter dataset name" />
+        </x-filament::input.wrapper>
+    </div>
+
+    @error('name')
+        <div style="margin-bottom: 1rem">
+            <span style="color: red;">{{ $message }}</span>
+        </div>
+    @enderror
 
     <button
         class="fi-color fi-color-primary fi-bg-color-600 hover:fi-bg-color-500 dark:fi-bg-color-600 dark:hover:fi-bg-color-500 fi-text-color-0 hover:fi-text-color-0 dark:fi-text-color-0 dark:hover:fi-text-color-0 fi-btn fi-size-md"
