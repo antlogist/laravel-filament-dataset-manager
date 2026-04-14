@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Interfaces\ZipUploaderInterface;
 use App\Models\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class ZipUploader
+class ZipUploader implements ZipUploaderInterface
 {
     const STORAGE_DISK = 'local';
     const EXTRACTION_FOLDER = 'dataset';
