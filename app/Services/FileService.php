@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ZipArchive;
@@ -66,7 +67,7 @@ class FileService
                 throw new Exception("Error opening the archive.");
             }
 
-            $isUnzipped = $zip->extractTo(storage_path($targetPath));
+            $isUnzipped = $zip->extractTo($targetPath);
             $zip->close();
 
             if (!$isUnzipped) {
@@ -102,18 +103,15 @@ class FileService
 
     public static function getFolderSize(string $path): int
     {
-        $fullPath = storage_path($path);
-        dd($fullPath);
-
-        if (!is_dir($fullPath)) {
+        if (!is_dir($path)) {
             $errorMessage = 'The folder was not found when calculating its size';
 
-            info($errorMessage . ' :' . $fullPath);
+            info($errorMessage . ' :' . $path);
 
             throw new \Exception($errorMessage);
         }
 
-        return self::calculateFolderSize(storage_path($path));
+        return self::calculateFolderSize($path);
     }
 
     public static function calculateFolderSize(?string $path): int
@@ -134,5 +132,29 @@ class FileService
         }
 
         return $size;
+    }
+
+    public static function getHash(string $path, string $disk): string
+    {
+        if (!Storage::disk($disk)->exists($path)) {
+            $errorMessage = 'The folder was not found when calculating the hash.';
+
+            info($errorMessage . ' :' . $path);
+
+            throw new \Exception($errorMessage);
+        }
+
+        $files = Storage::disk($disk)->allFiles($path);
+        sort($files);
+
+        $context = hash_init('md5');
+
+        foreach ($files as $file) {
+            $filePath = Storage::disk($disk)->path($file);
+
+            hash_update($context, hash_file('md5', $filePath));
+        }
+
+        return hash_final($context);
     }
 }

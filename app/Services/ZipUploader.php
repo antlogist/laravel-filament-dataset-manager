@@ -5,11 +5,13 @@ namespace App\Services;
 use App\Models\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ZipUploader
 {
-    const EXTRACTION_PATH = 'public' . DIRECTORY_SEPARATOR . 'dataset';
+    const STORAGE_DISK = 'local';
+    const EXTRACTION_FOLDER = 'dataset';
     const FILE_EXT = ['jpg', 'png'];
 
     public int $userId;
@@ -53,12 +55,17 @@ class ZipUploader
     {
         // Unique folder for unzip files
         $timestamp = date('Y-m-d-H-i-s');
-        $this->extractionPath = 'app' . DIRECTORY_SEPARATOR . self::EXTRACTION_PATH . DIRECTORY_SEPARATOR . $this->userId . DIRECTORY_SEPARATOR . $timestamp;
+        $folderPath = Storage::disk(self::STORAGE_DISK)->path(self::EXTRACTION_FOLDER);
+        $this->extractionPath = $folderPath . DIRECTORY_SEPARATOR . $this->userId . DIRECTORY_SEPARATOR . $timestamp;
 
         // Unzip files
         FileService::unzipFile($this->realPath, $this->extractionPath);
 
+        // Get folder size
         $this->folderSize = FileService::getFolderSize($this->extractionPath);
+
+        // Calculate files hash
+        $this->hash = FileService::getHash(self::EXTRACTION_FOLDER . DIRECTORY_SEPARATOR . $this->userId . DIRECTORY_SEPARATOR . $timestamp, self::STORAGE_DISK);
 
         // Archive deletion
         FileService::deleteFile($this->realPath);
@@ -75,7 +82,7 @@ class ZipUploader
             'zip_size_bytes' => $this->zipSize,
             'number_of_file' => $this->numberOfFiles,
             'dataset_type' => 'image',
-            'hash' => 'test_hash'
+            'hash' => $this->hash
         ]);
     }
 }
