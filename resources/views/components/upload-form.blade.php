@@ -4,6 +4,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Services\ZipUploader;
 use Illuminate\Support\Facades\Log;
+use App\Filament\Resources\UploadedFiles\UploadedFileResource;
 
 new class extends Component {
     use WithFileUploads;
@@ -23,6 +24,8 @@ new class extends Component {
         try {
             $uploader = new ZipUploader();
             $uploader->save($this->file, $this->host, $this->name);
+
+            $this->redirectIntended(UploadedFileResource::getUrl());
         } catch (\Exception $e) {
             Log::info($e->getMessage());
             $this->dispatch('notify', ['message' => $e->getMessage()]);
