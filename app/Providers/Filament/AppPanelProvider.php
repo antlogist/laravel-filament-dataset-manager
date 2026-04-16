@@ -29,7 +29,6 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('/')
-            ->login()
             ->colors([
                 'primary' => Color::Indigo,
                 'gray' => Color::Slate
@@ -57,7 +56,13 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->login()
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
+            ->emailChangeVerification()
+            ->profile();
     }
 
     public function register(): void
