@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class UploadedFileResource extends Resource
 {
@@ -48,6 +50,15 @@ class UploadedFileResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (Auth::user()?->role === 'user') {
+            return parent::getEloquentQuery()->where('user_id', Auth::id());
+        }
+
+        return parent::getEloquentQuery();
     }
 
     public static function getPages(): array
